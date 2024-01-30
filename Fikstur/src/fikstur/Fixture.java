@@ -36,7 +36,7 @@ public class Fixture implements Serializable{
         this.currentWeek = 0;
         this.currentMatch = 0;
         initWeeks();
-        //Functions.printWeekMatches(weekList);
+        Functions.printWeekMatches(weekList);
     }
     
     private void initWeeks() {
@@ -49,12 +49,13 @@ public class Fixture implements Serializable{
         for(int i = 0; i < teamCount - 1; ++i) {
             List<Pair> teamMatches = new ArrayList<>();
             for(int j = i + 1; j < teamCount; ++j) {
-                teamMatches.add(new Pair(teamList.get(i), teamList.get(j)));
+                Pair np = new Pair(teamList.get(i), teamList.get(j));
+                teamMatches.add(np);
+                //System.out.println("!!!t1 : " + np.getTeam1().getTeamName() + " t2: " + np.getTeam2().getTeamName());
             }
             allTeamMatches.add(teamMatches);
         }
         List<Week> weekListLast = new ArrayList<>();
-        
         for(int i = 0; i < weekCount / 2; ++i) {
             Pair currentPair = allTeamMatches.get(0).get(0);
             Pair reversedPair = new Pair(currentPair.getTeam2(), currentPair.getTeam1());
@@ -64,6 +65,7 @@ public class Fixture implements Serializable{
             weekMatchesReversed.add(reversedPair);
             Set<Team> playedTeams = new HashSet<>();
             Functions.DFS(1, teamCount, 0, weeklyMatchCount - 1, currentPair, allTeamMatches, playedTeams, weekMatches, weekMatchesReversed);
+            Functions.printWeekMatch(weekMatches);
             Functions.removeElement(allTeamMatches, weekMatches);
             weekList.add(new Week(weekMatches));
             weekListLast.add(new Week(weekMatchesReversed));

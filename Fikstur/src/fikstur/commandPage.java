@@ -283,7 +283,9 @@ public class commandPage extends javax.swing.JFrame {
         getParameters();
         DefaultTableModel model = (DefaultTableModel) matchHistoryTable.getModel();
         
-        if (currentWeek < fixture.getWeekList().size()) {
+        if (currentWeek < fixture.getWeekList().size() && currentMatch < fixture.getWeeklyMatchCount()) {
+            System.out.println("cw: "+ currentWeek + " " + fixture.getWeekList().size());
+            System.out.println("cm: "+ currentMatch + " " + fixture.getWeeklyMatchCount());
             Pair cP = fixture.getWeekList().get(currentWeek).getPairs().get(currentMatch);
             nextMatchT1.setText(cP.getTeam1().getTeamName());
             none.setText(" - ");

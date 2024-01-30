@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Random;
@@ -22,26 +23,34 @@ import javax.swing.JOptionPane;
 public class Functions {
     public static boolean DFS(int lastIndex, int teamCount, int matchesPicked, int weekMatchCount, Pair prevPair, List<List<Pair>> allTeamMatches, Set<Team> playedTeams, List<Pair> weekMatches, List<Pair> weekMatchesReversed) {
         if (matchesPicked == weekMatchCount) return true;
-        Set<Team> tmpPlayedTeams = playedTeams;
+        Set<Team> tmpPlayedTeams = new HashSet<>();
+        if (playedTeams != null) tmpPlayedTeams.addAll(playedTeams);
         tmpPlayedTeams.add(prevPair.getTeam1());
         tmpPlayedTeams.add(prevPair.getTeam2());
         
         for(int i = lastIndex; i < teamCount - 1; ++i) {
             List<Pair> teamMatches = allTeamMatches.get(i);
-            if (!teamMatches.isEmpty()) {
-                Team team1 = teamMatches.get(0).getTeam1();
-                int size = teamMatches.size();
-                if (!tmpPlayedTeams.contains(team1) && size > 0) {
-                    for(int j = 0; j < size; ++j) {
-                        Pair currentPair = teamMatches.get(j);
-                        if (!tmpPlayedTeams.contains(currentPair.getTeam2()) && DFS(i + 1, teamCount, matchesPicked + 1, weekMatchCount, currentPair, allTeamMatches, tmpPlayedTeams, weekMatches, weekMatchesReversed)) {
-                            weekMatches.add(currentPair);
-                            weekMatchesReversed.add(new Pair(currentPair.getTeam2(), currentPair.getTeam1()));
-                            return true;
-                        }
-                    }
-                }
+            if (teamMatches.isEmpty()) continue;
+            Team team1 = teamMatches.get(0).getTeam1();
+            //System.out.println("i : " + i + " team 1: " + team1.getTeamName());
+            if (tmpPlayedTeams.contains(team1)) {
+                //System.out.println("set contains : " + team1.getTeamName());
+                continue;
             }
+            for(int j = 0; j < teamMatches.size(); ++j) {
+                Pair currentPair = teamMatches.get(j);
+                //System.out.println("!!!! cP t1 : " + currentPair.getTeam1().getTeamName() + " t2 : " + currentPair.getTeam2().getTeamName());
+                if (tmpPlayedTeams.contains(currentPair.getTeam2())) continue;
+                boolean flag = DFS(i + 1, teamCount, matchesPicked + 1, weekMatchCount, currentPair, allTeamMatches, tmpPlayedTeams, weekMatches, weekMatchesReversed);
+                if (flag) {
+                    weekMatches.add(currentPair);
+                    weekMatchesReversed.add(new Pair(currentPair.getTeam2(), currentPair.getTeam1()));
+                    return true;
+                }
+                //System.out.println("Rejected\n");
+            }
+            
+            
             
         }
         return false;
@@ -57,6 +66,13 @@ public class Functions {
         }
     }
     
+    public static void printWeekMatch(List<Pair> pairList) {
+        System.out.println();
+        for(Pair p : pairList) {
+            System.out.println("Removed : " + p.getTeam1().getTeamName() + " - " + p.getTeam2().getTeamName());
+        }
+    }
+    
     public static void removeElement(List<List<Pair>> listListPair, List<Pair> pairlist) {
         for(List<Pair> listPair : listListPair) {
             listPair.removeAll(pairlist);
@@ -65,17 +81,18 @@ public class Functions {
     
     private static int randomGoals() {
         Random rand = new Random();
-        int num = rand.nextInt(55);
+        int num = rand.nextInt(54);
+        System.out.println("sayı : " + num);
         if (num < 10) return 0;
-        if (num < 19) return 1;
+        if (num < 18) return 1;
         if (num < 27) return 2;
-        if (num < 34) return 3;
-        if (num < 40) return 4;
-        if (num < 45) return 5;
-        if (num < 49) return 6;
-        if (num < 52) return 7;
-        if (num < 54) return 8;
-        return 9;
+        if (num < 33) return 3;
+        if (num < 39) return 4;
+        if (num < 44) return 5;
+        if (num < 48) return 6;
+        if (num < 51) return 7;
+        if (num < 53) return 8;
+                      return 9;
     }
     
     private static void adjustPoints(Pair currPair, int team1Goal, int team2Goal, boolean flag){
