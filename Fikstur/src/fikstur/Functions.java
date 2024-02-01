@@ -190,4 +190,16 @@ public class Functions {
         }
         return fixture;
     }
+
+    public static List<Team> shuffleTeamList(List<Team> teamList) {
+        List<Team> res = new ArrayList<>();
+        int size = teamList.size();
+        Random rand = new Random();
+        
+        for(int i = 0; i < size; ++i) {
+            int num = rand.nextInt(teamList.size());
+            res.add(teamList.remove(num));
+        }
+        return res;
+    }
 }

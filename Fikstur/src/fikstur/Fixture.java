@@ -18,7 +18,7 @@ public class Fixture implements Serializable{
     private final String fixtureName;
     private final int teamCount;
     private final int isBay;
-    private final List<Team> teamList;
+    private List<Team> teamList;
     private final int weekCount;
     private final List<Week> weekList;
     private final int weeklyMatchCount; // bay included
@@ -45,6 +45,7 @@ public class Fixture implements Serializable{
             Team bt = new Team("Bay");
             teamList.add(bt);
         }
+        teamList = Functions.shuffleTeamList(teamList);
         
         List<Team> tmpTeamList = new ArrayList<>();
         tmpTeamList.addAll(teamList);
@@ -59,7 +60,7 @@ public class Fixture implements Serializable{
             
             for(int j = 0; j < weeklyMatchCount - 1; ++j) {
                 if (i < weekCount / 2)
-                    weekMatches.add(new Pair(tmpTeamList.get(j), tmpTeamList.get(tmpTeamList.size() - 1 - j)));
+                    weekMatches.add(new Pair(tmpTeamList.get(j), tmpTeamList.get(tmpTeamList.size() - 2 - j)));
                 else
                     weekMatches.add(new Pair(tmpTeamList.get(tmpTeamList.size() - 1 - j), tmpTeamList.get(j)));
             }

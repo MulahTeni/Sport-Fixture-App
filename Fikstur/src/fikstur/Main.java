@@ -20,7 +20,7 @@ public class Main {
         
         //Scanner scan = new Scanner(System.in);
         
-        int tCount = 20;
+        int tCount = 5;
         List<Team> teamList = new ArrayList<>();
         for(int i = 0; i < tCount; ++i) {
             Team newTeam = new Team("team" + i);
