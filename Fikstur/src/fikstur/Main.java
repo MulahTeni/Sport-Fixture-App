@@ -20,7 +20,7 @@ public class Main {
         
         //Scanner scan = new Scanner(System.in);
         
-        int tCount = 5;
+        int tCount = 20;
         List<Team> teamList = new ArrayList<>();
         for(int i = 0; i < tCount; ++i) {
             Team newTeam = new Team("team" + i);
@@ -28,12 +28,12 @@ public class Main {
         }
         
         Fixture fix = new Fixture("Deneme", tCount, teamList);
-        //selectFixture.fixtures.add(fix);
-        //Functions.saveFixture(selectFixture.fixtures, "fixtures.ser");
+        selectFixture.fixtures.add(fix);
+        Functions.saveFixture(selectFixture.fixtures, "fixtures.ser");
         //System.out.println(Functions.randomGoals());
 
-        //selectFixture frame = new selectFixture();
+        selectFixture frame = new selectFixture();
         //frame.fixtures.add(fix);
-        //frame.setVisible(true);
+        frame.setVisible(true);
     }
 }
