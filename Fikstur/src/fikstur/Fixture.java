@@ -35,8 +35,38 @@ public class Fixture implements Serializable{
         this.weekList = new ArrayList<>();
         this.currentWeek = 0;
         this.currentMatch = 0;
-        initWeeks();
+        initWeeks2();
+        //initWeeks();
         Functions.printWeekMatches(weekList);
+    }
+    
+    private void initWeeks2() {
+        if (isBay == 1) {
+            Team bt = new Team("Bay");
+            teamList.add(bt);
+        }
+        
+        List<Team> tmpTeamList = new ArrayList<>();
+        tmpTeamList.addAll(teamList);
+        tmpTeamList.remove(teamList.get(0));
+        
+        for(int i = 0; i < weekCount; ++i) {
+            List<Pair> weekMatches = new ArrayList<>();
+            if (i < weekCount / 2)
+                weekMatches.add(new Pair(teamList.get(0), tmpTeamList.getLast()));
+            else
+                weekMatches.add(new Pair(tmpTeamList.getLast(), teamList.get(0)));
+            
+            for(int j = 0; j < weeklyMatchCount - 1; ++j) {
+                if (i < weekCount / 2)
+                    weekMatches.add(new Pair(tmpTeamList.get(j), tmpTeamList.get(tmpTeamList.size() - 1 - j)));
+                else
+                    weekMatches.add(new Pair(tmpTeamList.get(tmpTeamList.size() - 1 - j), tmpTeamList.get(j)));
+            }
+            Team tmp = tmpTeamList.removeFirst();
+            tmpTeamList.addLast(tmp);
+            weekList.add(new Week(weekMatches));
+        }
     }
     
     private void initWeeks() {
